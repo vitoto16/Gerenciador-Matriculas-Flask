@@ -8,3 +8,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 
 db = SQLAlchemy(app)
 
+from gerenciador_matriculas import routes

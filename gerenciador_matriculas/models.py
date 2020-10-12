@@ -1,6 +1,6 @@
-from gerenciador_matriculas import db
 from datetime import datetime
 from slugify import slugify
+from gerenciador_matriculas import db
 
 
 class Aluno(db.Model):
@@ -50,4 +50,4 @@ class Matricula(db.Model):
     cursoId = db.Column(db.Integer, db.ForeignKey('curso.id'), nullable=False)
 
     def __repr__(self):
-        return f"Matricula('{self.nome}', '{self.status}', '{self.slug}', '{self.sequencia}', '{self.dataCadastro}')"
+        return f"Matricula('{self.alunoId}', '{self.cursoId}', '{self.dataCadastro}')"
