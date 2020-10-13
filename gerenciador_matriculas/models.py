@@ -14,8 +14,11 @@ class Aluno(db.Model):
     matriculas = db.relationship('Matricula', backref='aluno', lazy=True)
 
     def __repr__(self):
-        return f"Aluno('{self.nome}', '{self.cpf}', '{self.email}', '{self.status}', '{self.dataNascimento}')"
+        return f"Aluno(nome='{self.nome}', cpf='{self.cpf}', email='{self.email}'," \
+               f"status='{self.status}', dataNascimento='{self.dataNascimento}')"
 
+    def __str__(self):
+        return self.email
 
 class Curso(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +32,10 @@ class Curso(db.Model):
     matriculas = db.relationship('Matricula', backref='curso', lazy=True)
 
     def __repr__(self):
-        return f"Curso('{self.nome}', '{self.status}', '{self.slug}', '{self.sequencia}', '{self.dataCadastro}')"
+        return f"Curso(nome='{self.nome}', slug='{self.slug}', status='{self.status}', sequencia='{self.sequencia}')"
+
+    def __str__(self):
+        return self.nome
 
     @staticmethod
     def slugify(target, value, oldvalue, initiator):
@@ -50,4 +56,4 @@ class Matricula(db.Model):
     cursoId = db.Column(db.Integer, db.ForeignKey('curso.id'), nullable=False)
 
     def __repr__(self):
-        return f"Matricula('{self.alunoId}', '{self.cursoId}', '{self.dataCadastro}')"
+        return f"Matricula(alunoId='{self.alunoId}', cursoId='{self.cursoId}', dataCadastro='{self.dataCadastro}')"
