@@ -11,7 +11,7 @@ class Aluno(db.Model):
     status = db.Column(db.Boolean(35), default=False)
     dataNascimento = db.Column(db.DateTime, nullable=False)
 
-    matriculas = db.relationship('Matricula', backref='aluno', lazy=True)
+    matriculas = db.relationship('Matricula', backref='aluno', cascade='all, delete', lazy=True)
 
     def __repr__(self):
         return f"Aluno(nome='{self.nome}', cpf='{self.cpf}', email='{self.email}'," \
@@ -19,6 +19,7 @@ class Aluno(db.Model):
 
     def __str__(self):
         return self.email
+
 
 class Curso(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,7 +30,7 @@ class Curso(db.Model):
     precoVenda = db.Column(db.Float)
     dataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
 
-    matriculas = db.relationship('Matricula', backref='curso', lazy=True)
+    matriculas = db.relationship('Matricula', backref='curso', cascade='all, delete', lazy=True)
 
     def __repr__(self):
         return f"Curso(nome='{self.nome}', slug='{self.slug}', status='{self.status}', sequencia='{self.sequencia}')"
@@ -48,7 +49,7 @@ db.event.listen(Curso.nome, 'set', Curso.slugify, retval=False)
 
 class Matricula(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(15), default='bloqueado')
+    status = db.Column(db.String(15), nullable=False, default='Bloqueado')
     ano = db.Column(db.String(5), nullable=False)
     dataCadastro = db.Column(db.DateTime, default=datetime.utcnow())
 
@@ -56,4 +57,8 @@ class Matricula(db.Model):
     cursoId = db.Column(db.Integer, db.ForeignKey('curso.id'), nullable=False)
 
     def __repr__(self):
-        return f"Matricula(alunoId='{self.alunoId}', cursoId='{self.cursoId}', dataCadastro='{self.dataCadastro}')"
+        return f"Matricula(alunoId='{self.alunoId}', cursoId='{self.cursoId}', ano='{self.ano}')"
+
+    def __str__(self):
+
+        return f"Curso: {self.curso}, Status: {self.status}"

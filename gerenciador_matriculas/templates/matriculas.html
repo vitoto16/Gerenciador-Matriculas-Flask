@@ -1,58 +1,94 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="container">
-        <form action="" method="POST" novalidate>
-            {{ form.hidden_tag() }}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Cadastro de Curso</legend>
-                <div class="form-group">
-                    {{ form.aluno.label(class="form-control-label") }}
-                    {% if form.aluno.errors %}
-                        {{ form.aluno(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.aluno.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+        <div class="row">
+            <div class="col-sm">
+                <form action="" method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Matrícula de Alunos</legend>
+                        <div class="form-group">
+                            {{ form.aluno.label(class="form-control-label") }}
+                            {% if form.aluno.errors %}
+                                {{ form.aluno(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.aluno.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.aluno(class="form-control form-control-lg") }}
+                            {% endif %}
                         </div>
-                    {% else %}
-                        {{ form.aluno(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.curso.label(class="form-control-label") }}
-                    {% if form.curso.errors %}
-                        {{ form.curso(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.curso.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+                        <div class="form-group">
+                            {{ form.curso.label(class="form-control-label") }}
+                            {% if form.curso.errors %}
+                                {{ form.curso(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.curso.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.curso(class="form-control form-control-lg") }}
+                            {% endif %}
                         </div>
-                    {% else %}
-                        {{ form.curso(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-                <div class="form-group">
-                    {{ form.ano.label(class="form-control-label") }}
-                    {% if form.ano.errors %}
-                        {{ form.ano(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
-                            {% for error in form.ano.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
+                        <div class="form-group">
+                            {{ form.ano.label(class="form-control-label") }}
+                            {% if form.ano.errors %}
+                                {{ form.ano(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.ano.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.ano(class="form-control form-control-lg") }}
+                            {% endif %}
                         </div>
-                    {% else %}
-                        {{ form.ano(class="form-control form-control-lg") }}
-                    {% endif %}
-                </div>
-            </fieldset>
-            <div class="form-group">
-                {{ form.submit(class="btn btn-outline-info") }}
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-outline-info") }}
+                    </div>
+                </form>
             </div>
-        </form>
-        {% for aluno in alunos %}
-        <h3>{{ aluno.nome }}</h3>
-        <h3>{{ aluno.status }}</h3>
-        <br>
-        {% endfor %}
+            <div class="col-sm">
+                {% for aluno in alunos %}
+                    <article class="media content-section">
+                        <div class="media-body">
+                            <div class="article-metadata">
+                                <a href="{{ url_for('edita_aluno', aluno_id=aluno.id) }}" type="button" class="btn btn-info">Editar</a>
+                                <a href="{{ url_for('deleta_aluno', aluno_id=aluno.id) }}" type="button" class="btn btn-danger">Deletar</a>
+                            </div>
+                            <h2 class="article-title">{{ aluno.nome }}</h2>
+                            <p class="article-content"><strong>CPF: </strong>{{ aluno.cpf }}</p>
+                            <p class="article-content"><strong>E-mail: </strong>{{ aluno.email }}</p>
+                            {% if aluno.status %}
+                                <p class="article-content"><strong>Status: </strong>Ativo(a)</p>
+                            {% else %}
+                                <p class="article-content"><strong>Status: </strong>Inativo(a)</p>
+                            {% endif %}
+                            <p class="article-content"><strong>Matrículas:</strong></p>
+                            {% if aluno.matriculas %}
+                                {% for matricula in aluno.matriculas %}
+                                    <h5 class="article-content pl-5">Curso: {{ matricula.curso }}</h5>
+                                    <h5 class="article-content pl-5">Status: {{ matricula.status }}</h5>
+                                    <ul class="list-inline pl-5">
+                                        <li class="list-inline-item"><a href="{{ url_for('ativa_matricula', matricula_id=matricula.id) }}">Ativar</a></li>
+                                        <li class="list-inline-item"><a href="{{ url_for('bloqueia_matricula', matricula_id=matricula.id) }}">Bloquear</a></li>
+                                        <li class="list-inline-item"><a href="{{ url_for('cancela_matricula', matricula_id=matricula.id) }}">Cancelar</a></li>
+                                    </ul>
+                                    <span class=""></span>
+                                    <span class=""></span>
+                                    <span class=""></span>
+                                {% endfor %}
+                            {% else %}
+                                <h5 class="article-content-pl pl-5">Não há matrículas no momento</h5>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
