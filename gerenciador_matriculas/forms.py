@@ -1,11 +1,12 @@
 from flask import request
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DateField, SubmitField, FloatField, SelectField, RadioField
-from wtforms.validators import DataRequired, Length, Email, ValidationError
-from gerenciador_matriculas.models import Aluno, Curso, Matricula
+from wtforms import StringField, IntegerField, DateField, SubmitField, FloatField, SelectField,\
+    RadioField, PasswordField
+from wtforms.validators import DataRequired, Length, Email, ValidationError, EqualTo
+from gerenciador_matriculas.models import Aluno, Curso, Matricula, Gerente
 
 
-def asserting_uniques(form, field):
+def valida_campos_aluno(form, field):
     if field.name == 'cpf':
         aluno = Aluno.query.filter_by(cpf=field.data).first()
         print(field.name, field.data)
@@ -25,11 +26,41 @@ def asserting_uniques(form, field):
         if aluno:
             raise ValidationError(f"Este {field.name} já está cadastrado!")
 
+def validate_matricula(form, aluno):
+    curso = Curso.query.filter_by(nome=form.curso.data).first()
+    aluno_selecionado = Aluno.query.filter_by(email=aluno.data).first()
+    matriculado = Matricula.query.filter_by(alunoId=aluno_selecionado.id, cursoId=curso.id).first()
+    if matriculado:
+        raise ValidationError("Este aluno já está matriculado neste curso!")
+
+
+class FormRegistrar(FlaskForm):
+    username = StringField('Nome de usuário', validators=[DataRequired(), Length(min=4, max=35)])
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    password = PasswordField('Senha', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Registrar')
+
+    def validate_username(self, username):
+        gerente = Gerente.query.filter_by(username=username.data).first()
+        if gerente:
+            raise ValidationError("Este nome de usuário já está sendo usado!")
+
+    def validate_email(self, email):
+        gerente = Gerente.query.filter_by(email=email.data).first()
+        if gerente:
+            raise ValidationError("Este e-mail já está sendo usado!")
+
+class FormLogin(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    password = PasswordField('Senha', validators=[DataRequired()])
+    submit = SubmitField('Login')
+
 
 class FormAluno(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired(), Length(max=35)])
-    cpf = StringField('CPF', validators=[DataRequired(), Length(min=11), asserting_uniques])
-    email = StringField('Email', validators=[DataRequired(), Email(), asserting_uniques])
+    cpf = StringField('CPF', validators=[DataRequired(), Length(min=11), valida_campos_aluno])
+    email = StringField('Email', validators=[DataRequired(), Email(), valida_campos_aluno])
     status = RadioField('Status', choices=['Ativo(a)', 'Inativo(a)'], validators=[DataRequired()])
     dataNascimento = DateField('Data de Nascimento (dd/mm/aaaa) ', validators=[DataRequired()], format='%d/%m/%Y')
     submit = SubmitField('Cadastrar')
@@ -55,13 +86,6 @@ class FormCurso(FlaskForm):
             if curso:
                 raise ValidationError("Este curso já está cadastrado!")
 
-
-def validate_matricula(form, aluno):
-    curso = Curso.query.filter_by(nome=form.curso.data).first()
-    aluno_selecionado = Aluno.query.filter_by(email=aluno.data).first()
-    matriculado = Matricula.query.filter_by(alunoId=aluno_selecionado.id, cursoId=curso.id).first()
-    if matriculado:
-        raise ValidationError("Este aluno já está matriculado neste curso!")
 
 
 class FormMatricula(FlaskForm):

@@ -1,6 +1,24 @@
 from datetime import datetime
 from slugify import slugify
-from gerenciador_matriculas import db
+from gerenciador_matriculas import db, login_manager
+from flask_login import UserMixin
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Gerente.query.get(int(user_id))
+
+class Gerente(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(35), nullable=False, unique=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
+
+    alunos = db.relationship('Aluno', backref='gerente', cascade='all, delete', lazy=True)
+    cursos = db.relationship('Curso', backref='gerente', cascade='all, delete', lazy=True)
+
+    def __repr__(self):
+        return f"Gerente(username='{self.username}', email='{self.email}', " \
+               f"alunos='{self.alunos}', cursos='{self.cursos}')"
 
 
 class Aluno(db.Model):
@@ -12,6 +30,8 @@ class Aluno(db.Model):
     dataNascimento = db.Column(db.DateTime, nullable=False)
 
     matriculas = db.relationship('Matricula', backref='aluno', cascade='all, delete', lazy=True)
+
+    gerenteId = db.Column(db.Integer, db.ForeignKey('gerente.id'), nullable=False)
 
     def __repr__(self):
         return f"Aluno(nome='{self.nome}', cpf='{self.cpf}', email='{self.email}'," \
@@ -31,6 +51,8 @@ class Curso(db.Model):
     dataCadastro = db.Column(db.DateTime, default=datetime.utcnow)
 
     matriculas = db.relationship('Matricula', backref='curso', cascade='all, delete', lazy=True)
+
+    gerenteId = db.Column(db.Integer, db.ForeignKey('gerente.id'), nullable=False)
 
     def __repr__(self):
         return f"Curso(nome='{self.nome}', slug='{self.slug}', status='{self.status}', sequencia='{self.sequencia}')"
