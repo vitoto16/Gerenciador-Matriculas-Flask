@@ -29,9 +29,10 @@ def valida_campos_aluno(form, field):
 def validate_matricula(form, aluno):
     curso = Curso.query.filter_by(nome=form.curso.data).first()
     aluno_selecionado = Aluno.query.filter_by(email=aluno.data).first()
-    matriculado = Matricula.query.filter_by(alunoId=aluno_selecionado.id, cursoId=curso.id).first()
-    if matriculado:
-        raise ValidationError("Este aluno já está matriculado neste curso!")
+    matriculas = Matricula.query.filter_by(aluno=aluno_selecionado, curso=curso).all()
+    for matricula in matriculas:
+        if matricula and matricula.status != 'Cancelado':
+            raise ValidationError("Este aluno já está matriculado neste curso!")
 
 
 class FormRegistrar(FlaskForm):

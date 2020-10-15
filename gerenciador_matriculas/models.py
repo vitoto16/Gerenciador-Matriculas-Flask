@@ -33,12 +33,24 @@ class Aluno(db.Model):
 
     gerenteId = db.Column(db.Integer, db.ForeignKey('gerente.id'), nullable=False)
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'nome': self.nome,
+            'cpf': self.cpf,
+            'email': self.email,
+            'status': self.status,
+            'dataNascimento': self.dataNascimento,
+            'matriculas': self.matriculas,
+            'gerenteId': self.gerenteId
+        }
+
     def __repr__(self):
         return f"Aluno(nome='{self.nome}', cpf='{self.cpf}', email='{self.email}'," \
                f"status='{self.status}', dataNascimento='{self.dataNascimento}')"
 
     def __str__(self):
-        return self.email
+        return f"{self.nome}, {self.id}"
 
 
 class Curso(db.Model):

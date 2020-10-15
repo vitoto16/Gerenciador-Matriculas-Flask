@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request, abort
+from flask import render_template, redirect, url_for, flash, request, abort, jsonify
 from gerenciador_matriculas import app, db, bcrypt
 from gerenciador_matriculas.forms import FormAluno, FormCurso, FormMatricula, FormRegistrar, FormLogin
 from gerenciador_matriculas.models import Aluno, Curso, Matricula, Gerente
@@ -100,6 +100,8 @@ def cadastro_curso():
                       precoVenda=form.precoVenda.data,
                       gerente=current_user
                       )
+        if form.status.data == 'Ativo':
+            curso.status = True
         db.session.add(curso)
         db.session.commit()
         flash('Curso cadastrado com sucesso!', 'success')
@@ -235,3 +237,11 @@ def cancela_matricula(matricula_id):
         else:
             flash("Esta matrícula já está cancelada!", 'danger')
             return redirect(url_for('home'))
+
+@app.route('/api/aluno/<int:aluno_id>')
+@login_required
+def alunos_all(aluno_id):
+    aluno = Aluno.query.get(aluno_id)
+    gerente = aluno.gerente
+    if gerente == current_user:
+        return jsonify(aluno.serialize())
