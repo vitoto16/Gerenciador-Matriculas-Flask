@@ -1,4 +1,6 @@
-from gerenciador_matriculas import app
+from gerenciador_matriculas import create_app
+
+app = create_app()
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -60,8 +60,8 @@
                     <article class="media content-section article-aluno">
                         <div class="media-body">
                             <div class="article-metadata">
-                                <a href="{{ url_for('edita_aluno', aluno_id=aluno.id) }}" type="button" class="mb-3 btn btn-info">Editar</a>
-                                <a href="{{ url_for('deleta_aluno', aluno_id=aluno.id) }}" type="button" class="mb-3 btn btn-danger">Deletar</a>
+                                <a href="{{ url_for('alunos.edita_aluno', aluno_id=aluno.id) }}" type="button" class="mb-3 btn btn-info">Editar</a>
+                                <a href="{{ url_for('alunos.deleta_aluno', aluno_id=aluno.id) }}" type="button" class="mb-3 btn btn-danger">Deletar</a>
                             </div>
                             <h3 class="article-title">{{ aluno.nome }}</h3>
                             <p class="article-content"><strong>CPF: </strong>{{ aluno.cpf }}</p>
@@ -77,9 +77,9 @@
                                     <h5 class="article-content pl-5">Curso: {{ matricula.curso }}</h5>
                                     <h5 class="article-content pl-5">Status: {{ matricula.status }}</h5>
                                     <ul class="list-inline pl-5">
-                                        <li class="list-inline-item"><a href="{{ url_for('ativa_matricula', matricula_id=matricula.id) }}">Ativar</a></li>
-                                        <li class="list-inline-item"><a href="{{ url_for('bloqueia_matricula', matricula_id=matricula.id) }}">Bloquear</a></li>
-                                        <li class="list-inline-item"><a href="{{ url_for('cancela_matricula', matricula_id=matricula.id) }}">Cancelar</a></li>
+                                        <li class="list-inline-item"><a href="{{ url_for('main.ativa_matricula', matricula_id=matricula.id) }}">Ativar</a></li>
+                                        <li class="list-inline-item"><a href="{{ url_for('main.bloqueia_matricula', matricula_id=matricula.id) }}">Bloquear</a></li>
+                                        <li class="list-inline-item"><a href="{{ url_for('main.cancela_matricula', matricula_id=matricula.id) }}">Cancelar</a></li>
                                     </ul>
                                     <span class=""></span>
                                     <span class=""></span>
@@ -102,8 +102,8 @@
                         <article class="media content-section article-curso">
                             <div class="media-body">
                                 <div class="article-metadata">
-                                    <a href="{{ url_for('edita_curso', slug=curso.slug) }}" type="button" class="mb-3 btn btn-info">Editar</a>
-                                    <a href="{{ url_for('deleta_curso', slug=curso.slug) }}" type="button" class="mb-3 btn btn-danger">Deletar</a>
+                                    <a href="{{ url_for('cursos.edita_curso', slug=curso.slug) }}" type="button" class="mb-3 btn btn-info">Editar</a>
+                                    <a href="{{ url_for('cursos.deleta_curso', slug=curso.slug) }}" type="button" class="mb-3 btn btn-danger">Deletar</a>
                                 </div>
                                 <h2 class="article-title">{{ curso.nome }}</h2>
                                 <p class="article-content"><strong>Sequencia: </strong>{{ curso.sequencia }}</p>
@@ -119,9 +119,9 @@
                                         <h5 class="article-content pl-5">Aluno: {{ matricula.aluno }}</h5>
                                         <h5 class="article-content pl-5">Status: {{ matricula.status }}</h5>
                                         <ul class="list-inline pl-5">
-                                            <li class="list-inline-item"><a href="{{ url_for('ativa_matricula', matricula_id=matricula.id) }}">Ativar</a></li>
-                                            <li class="list-inline-item"><a href="{{ url_for('bloqueia_matricula', matricula_id=matricula.id) }}">Bloquear</a></li>
-                                            <li class="list-inline-item"><a href="{{ url_for('cancela_matricula', matricula_id=matricula.id) }}">Cancelar</a></li>
+                                            <li class="list-inline-item"><a href="{{ url_for('main.ativa_matricula', matricula_id=matricula.id) }}">Ativar</a></li>
+                                            <li class="list-inline-item"><a href="{{ url_for('main.bloqueia_matricula', matricula_id=matricula.id) }}">Bloquear</a></li>
+                                            <li class="list-inline-item"><a href="{{ url_for('main.cancela_matricula', matricula_id=matricula.id) }}">Cancelar</a></li>
                                         </ul>
                                         <span class=""></span>
                                         <span class=""></span>

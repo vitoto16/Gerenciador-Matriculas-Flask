@@ -23,16 +23,16 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
-                        <a class="nav-item nav-link" href="{{ url_for('cadastro_aluno') }}">Cadastrar um Aluno</a>
-                        <a class="nav-item nav-link" href="{{ url_for('cadastro_curso') }}">Cadastrar um Curso</a>
+                        <a class="nav-item nav-link" href="{{ url_for('alunos.cadastro_aluno') }}">Cadastrar um Aluno</a>
+                        <a class="nav-item nav-link" href="{{ url_for('cursos.cadastro_curso') }}">Cadastrar um Curso</a>
                     </div>
                     <div class="navbar-nav">
                         {% if current_user.is_authenticated %}
-                            <a class="nav-item nav-link" href="{{ url_for('home') }}">Gerente: {{ current_user.username }}</a>
-                            <a class="btn btn-outline-danger nav-item nav-link" href="{{ url_for('logout') }}">Encerrar sessão</a>
+                            <a class="nav-item nav-link" href="{{ url_for('main.home') }}">Gerente: {{ current_user.username }}</a>
+                            <a class="btn btn-outline-danger nav-item nav-link" href="{{ url_for('gerentes.logout') }}">Encerrar sessão</a>
                         {% else %}
-                            <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
-                            <a class="nav-item nav-link" href="{{ url_for('registrar') }}">Registrar</a>
+                            <a class="nav-item nav-link" href="{{ url_for('gerentes.login') }}">Login</a>
+                            <a class="nav-item nav-link" href="{{ url_for('gerentes.registrar') }}">Registrar</a>
                         {% endif %}
                     </div>
                 </div>
