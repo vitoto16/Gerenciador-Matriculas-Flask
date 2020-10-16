@@ -3,9 +3,11 @@ from slugify import slugify
 from gerenciador_matriculas import db, login_manager
 from flask_login import UserMixin
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return Gerente.query.get(int(user_id))
+
 
 class Gerente(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -94,5 +96,4 @@ class Matricula(db.Model):
         return f"Matricula(alunoId='{self.alunoId}', cursoId='{self.cursoId}', ano='{self.ano}')"
 
     def __str__(self):
-
         return f"Curso: {self.curso}, Status: {self.status}"
