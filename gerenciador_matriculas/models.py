@@ -50,7 +50,7 @@ class Aluno(db.Model):
                f"status='{self.status}', dataNascimento='{self.dataNascimento}')"
 
     def __str__(self):
-        return f"{self.nome}, {self.id}"
+        return self.email
 
 
 class Curso(db.Model):
