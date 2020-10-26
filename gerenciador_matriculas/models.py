@@ -22,6 +22,16 @@ class Gerente(db.Model, UserMixin):
         return f"Gerente(username='{self.username}', email='{self.email}', " \
                f"alunos='{self.alunos}', cursos='{self.cursos}')"
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+            'alunos': [aluno.serialize() for aluno in self.alunos],
+            'cursos': [curso.serialize() for curso in self.cursos]
+        }
+
+
 
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -43,7 +53,7 @@ class Aluno(db.Model):
             'email': self.email,
             'status': self.status,
             'dataNascimento': self.dataNascimento,
-            'matriculas': self.matriculas,
+            'matriculas': [matricula.serialize() for matricula in self.matriculas],
             'gerenteId': self.gerenteId
         }
 
@@ -74,6 +84,19 @@ class Curso(db.Model):
     def __str__(self):
         return self.nome
 
+    def serialize(self):
+        return {
+            'id': self.id,
+            'nome': self.nome,
+            'slug': self.slug,
+            'sequencia': self.sequencia,
+            'status': self.status,
+            'dataCadastro': self.dataCadastro,
+            'precoVenda': self.precoVenda,
+            'matriculas': [matricula.serialize() for matricula in self.matriculas],
+            'gerenteId': self.gerenteId
+        }
+
     @staticmethod
     def slugify(target, value, oldvalue, initiator):
         if value and (not target.slug or value != oldvalue):
@@ -97,3 +120,13 @@ class Matricula(db.Model):
 
     def __str__(self):
         return f"Curso: {self.curso}, Status: {self.status}"
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'status': self.status,
+            'ano': self.ano,
+            'dataCadastro': self.dataCadastro,
+            'alunoId': self.alunoId,
+            'cursoId': self.cursoId
+        }

@@ -14,6 +14,7 @@ def cadastro_curso():
     if form.validate_on_submit():
         curso = Curso(nome=form.nome.data,
                       sequencia=form.sequencia.data,
+                      status=form.status,
                       precoVenda=form.precoVenda.data,
                       gerente=current_user
                       )

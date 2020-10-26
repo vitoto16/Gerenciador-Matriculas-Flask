@@ -24,9 +24,12 @@ def create_app(config_class=Config):
     from gerenciador_matriculas.cursos.routes import cursos
     from gerenciador_matriculas.gerentes.routes import gerentes
     from gerenciador_matriculas.main.routes import main
+    from gerenciador_matriculas.api.api import api
+
     app.register_blueprint(alunos)
     app.register_blueprint(cursos)
     app.register_blueprint(gerentes)
     app.register_blueprint(main)
+    app.register_blueprint(api)
 
     return app
