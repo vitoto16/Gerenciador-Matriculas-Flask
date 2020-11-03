@@ -1,9 +1,18 @@
 # **Gerenciador de Matrículas**
 
+### **Visão Geral**
+
 Aplicação Flask que permite que gerentes se registrem e gerenciem o cadastro de alunos, cursos e suas respectivas
 matrículas.
 
 ### **Como utilizar**
+
+### Utilização via Docker
+
+- Com Docker instalado, execute o comando `docker run -d -p 5000:5000 vitoto16/gerenciador_matriculas` para
+utilizar a versão mais recente.
+
+### Através deste repositório
 
 - Clone o repositório em seu git local ou faça o download.
 - No diretório raiz do projeto, crie um ambiente virtual e execute o comando `pip install -r requirements.txt`.
@@ -24,6 +33,6 @@ feita utilizando o método anterior. Exemplo: `export/set SQLALCHEMY_DATABASE_UR
     - `db.create_all()`
 - Assim criamos as tabelas no banco de dados a partir das classes modeladas no arquivo models.py.
 
-### A aplicação está pronta para uso!
+#### A aplicação está pronta para uso!
 
 Para iniciar o servidor de desenvolvimento, fora da Python Shell execute o comando `python run.py`.
