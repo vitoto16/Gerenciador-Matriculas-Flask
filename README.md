@@ -1,11 +1,11 @@
 # **Gerenciador de Matrículas**
 
-### **Visão Geral**
+## **Visão Geral**
 
 Aplicação Flask que permite que gerentes se registrem e gerenciem o cadastro de alunos, cursos e suas respectivas
 matrículas.
 
-### **Como utilizar**
+## **Como utilizar**
 
 ### Utilização via Docker
 
